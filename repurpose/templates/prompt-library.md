@@ -16,8 +16,9 @@ Do NOT quote or paraphrase it line-by-line. Instead, extract:
 1. The single core idea (one sentence).
 2. The underlying framework or steps (3–6 bullets, in your own words).
 3. The "aha" that makes it shareable.
-4. Two audiences it could serve: (a) general AI-automation, (b) personal-injury
-   law-firm owners.
+4. Which of these money-making audiences it best serves (pick 1–2):
+   creator · solopreneur · agency · localbiz · beginner — and the specific
+   payoff for each.
 
 Transcript:
 {{TRANSCRIPT}}
@@ -28,7 +29,7 @@ Transcript:
 ```
 Write an original 35-second short-form video script for {{PLATFORM}} in the
 voice of Vector Automation Systems — direct, practical, no hype, speaks to
-{{LANE_AUDIENCE}}.
+{{SEGMENT_AUDIENCE}} and how this makes them money.
 
 Base it ONLY on this framework (your own words, not the source's):
 {{FRAMEWORK}}
@@ -65,6 +66,16 @@ present.
 | Variable | Meaning |
 |----------|---------|
 | `{{PLATFORM}}` | Instagram Reels / TikTok / YouTube Shorts |
-| `{{LANE_AUDIENCE}}` | "AI-automation beginners & creators" or "personal-injury law-firm owners" |
+| `{{SEGMENT_AUDIENCE}}` | The audience for the chosen segment (see table below) |
 | `{{FRAMEWORK}}` | Output of prompt #1 |
-| `{{NICHE_TAGS}}` | e.g. #lawfirmmarketing #personalinjurylawyer #legaltech |
+| `{{NICHE_TAGS}}` | Segment-specific tags (see table below) |
+
+### Segment → audience & tags
+
+| Segment | `{{SEGMENT_AUDIENCE}}` | `{{NICHE_TAGS}}` |
+|---------|------------------------|------------------|
+| creator | content creators growing/monetizing an audience | #contentcreator #faceless #creatoreconomy |
+| solopreneur | solo founders & side-hustlers building income | #solopreneur #sidehustle #buildinpublic |
+| agency | freelancers/agencies selling automation services | #agencyowner #freelance #servicebusiness |
+| localbiz | local & service-business owners (incl. law firms) | #smallbusiness #localbusiness #leadgeneration |
+| beginner | total beginners earning their first dollar with AI | #learnai #aiforbeginners #makemoneyonline |

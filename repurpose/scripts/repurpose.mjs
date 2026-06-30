@@ -5,12 +5,12 @@
 //
 // Usage:
 //   node repurpose/scripts/repurpose.mjs \
-//     --title "AI chatbot that follows up with leads in 60 seconds" \
+//     --title "Build a $200 automation you can sell in a weekend" \
 //     --source "https://youtube.com/@sabrina_ramonov" \
-//     --framework "Instant, first-touch lead follow-up beats slow human follow-up" \
-//     --lane niche \
-//     --slug ai-chatbot-lead-followup \
-//     [--week 2026-week-01]
+//     --framework "Learn one automation, then sell it as a service" \
+//     --segment agency \
+//     --slug sell-automations-as-a-service \
+//     [--week 2026-week-02]
 
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
@@ -18,6 +18,40 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
+
+// Money-making audience segments. Keep in sync with content-map.md + README.
+const SEGMENTS = {
+  creator: {
+    audience: 'content creators growing/monetizing an audience',
+    hook: 'Most creators are doing this the slow, manual way.',
+    caption: 'Turn one idea into a week of content — without living in the editor.',
+    tags: '#aiautomation #contentcreator #faceless #creatoreconomy #ai #automation #aitools #contentmarketing',
+  },
+  solopreneur: {
+    audience: 'solo founders & side-hustlers building income',
+    hook: 'You can build this in a weekend and it pays you while you sleep.',
+    caption: 'A small AI build that turns into real income. Steal the playbook.',
+    tags: '#aiautomation #solopreneur #sidehustle #buildinpublic #ai #automation #nocode #makemoneyonline',
+  },
+  agency: {
+    audience: 'freelancers & agencies selling automation services',
+    hook: "You can learn this in a day and sell it for $2,000.",
+    caption: 'Learn one automation, then sell it. The whole agency model in 30s.',
+    tags: '#aiautomation #agencyowner #freelance #servicebusiness #ai #automation #smma #makemoney',
+  },
+  localbiz: {
+    audience: 'local & service-business owners (incl. law firms)',
+    hook: 'Most local businesses are leaving money on the table every single night.',
+    caption: "The leads are already coming in. It's what happens next that costs you.",
+    tags: '#aiautomation #smallbusiness #localbusiness #leadgeneration #automation #ai #aitools #marketing',
+  },
+  beginner: {
+    audience: 'total beginners earning their first dollar with AI',
+    hook: "If you've never automated anything, start embarrassingly simple.",
+    caption: 'Your first automation should save 30 minutes, not impress anyone.',
+    tags: '#aiautomation #learnai #aiforbeginners #makemoneyonline #automation #ai #nocode #productivity',
+  },
+};
 
 function parseArgs(argv) {
   const out = {};
@@ -30,7 +64,7 @@ function parseArgs(argv) {
 
 const args = parseArgs(process.argv.slice(2));
 
-const required = ['title', 'slug', 'lane'];
+const required = ['title', 'slug', 'segment'];
 const missing = required.filter((k) => !args[k]);
 if (missing.length) {
   console.error(`Missing required flag(s): ${missing.map((m) => '--' + m).join(', ')}`);
@@ -38,34 +72,30 @@ if (missing.length) {
   process.exit(1);
 }
 
-if (!['niche', 'general'].includes(args.lane)) {
-  console.error(`--lane must be "niche" or "general" (got "${args.lane}")`);
+const seg = SEGMENTS[args.segment];
+if (!seg) {
+  console.error(`--segment must be one of: ${Object.keys(SEGMENTS).join(', ')} (got "${args.segment}")`);
   process.exit(1);
 }
 
-const week = args.week || '2026-week-01';
-const isNiche = args.lane === 'niche';
+const week = args.week || '2026-week-02';
 
 const defaults = {
   source: args.source || 'https://youtube.com/@sabrina_ramonov',
   framework: args.framework || '<one-sentence framework — see prompt-library.md #1>',
-  hook_1: `Most ${isNiche ? 'law firms' : 'people'} are doing this the slow way.`,
+  hook_1: seg.hook,
   hook_2: 'Here is the 2-minute version.',
-  hook_3: 'I automated the boring part. Here is how.',
-  caption: isNiche
-    ? `The leads are already coming in. The problem is what happens in the next 5 minutes. Here's the AI fix.`
-    : `One small automation that buys back an hour a day. Steal it.`,
-  hashtags: isNiche
-    ? '#aiautomation #lawfirmmarketing #personalinjurylawyer #legaltech #lawfirmgrowth #leadgeneration #automation #smallbusiness'
-    : '#aiautomation #ai #automation #n8n #make #nocode #productivity #aitools',
-  cta: 'See it running on your intake → vectorautomationsystems.com/demo',
+  hook_3: 'I automated the boring part. Here is how it makes money.',
+  caption: seg.caption,
+  hashtags: seg.tags,
+  cta: 'Want it built for you? → vectorautomationsystems.com/demo',
 };
 
 const fill = (tpl) =>
   tpl
     .replaceAll('{{TITLE}}', args.title)
     .replaceAll('{{SLUG}}', args.slug)
-    .replaceAll('{{LANE}}', args.lane)
+    .replaceAll('{{LANE}}', `${args.segment} — ${seg.audience}`)
     .replaceAll('{{SOURCE}}', defaults.source)
     .replaceAll('{{FRAMEWORK}}', defaults.framework)
     .replaceAll('{{HOOK_1}}', defaults.hook_1)
@@ -90,5 +120,6 @@ await writeFile(outPath, fill(tpl), { flag: 'wx' }).catch((e) => {
 });
 
 console.log(`✓ Scaffolded ${outPath}`);
+console.log(`  Segment: ${args.segment} (${seg.audience})`);
 console.log('  Next: fill the script beats (prompt-library.md #2), shoot, then');
 console.log('  move it to Scheduled in repurpose/content-calendar.md');
