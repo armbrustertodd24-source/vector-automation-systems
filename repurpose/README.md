@@ -26,7 +26,11 @@ repurpose/
 │  ├─ content-package.md    ← the shape of one repurposed video's output
 │  └─ prompt-library.md     ← the AI prompts that drive generation
 ├─ scripts/
-│  └─ repurpose.mjs         ← scaffolds a content package from a source video
+│  ├─ repurpose.mjs         ← scaffolds a content package from a source video
+│  └─ voiceover.mjs         ← extracts a clean voiceover-only .txt from a package
+├─ voiceover/               ← generated .txt scripts (voice tool / teleprompter ready)
+│  ├─ 2026-week-01/
+│  └─ 2026-week-02/
 └─ batch/
    ├─ 2026-week-01/         ← localbiz + creator + beginner starter set
    └─ 2026-week-02/         ← creator / agency / solopreneur / beginner monetization set
@@ -73,6 +77,14 @@ node repurpose/scripts/repurpose.mjs \
 This drops a filled-in template under `repurpose/batch/`. Fill the script beats
 (`prompt-library.md` #2), shoot it, then move the row to **Scheduled** in
 `content-calendar.md`.
+
+```bash
+# Extract clean voiceover-only .txt files (voice tool / teleprompter ready)
+node repurpose/scripts/voiceover.mjs --all
+```
+
+This regenerates `repurpose/voiceover/**` from each package's Script section —
+run it whenever you add or edit a package.
 
 See `content-map.md` for the full backlog and `SYSTEM.md` for the automated
 version (new video → drafts in Notion → visuals → scheduled posts).

@@ -1,0 +1,5 @@
+Everyone's first automation idea is way too ambitious. You don't need an AI agent. You need to delete one annoying 20-minute task.
+Every automation is the same three parts: a trigger, an action, and a notification. Something happens, the system does the thing, it tells you it's done.
+Real one: a form gets submitted — that's the trigger. The details get added to a spreadsheet and a folder gets created — that's the action. You get a message — that's the notification. Fifteen minutes of clicking, gone.
+Ship the boring version first. You can make it smart later. Most people never ship because they're trying to build the impressive thing on day one.
+Tell me the task you'd automate first — I'll tell you if it's a good starter.
