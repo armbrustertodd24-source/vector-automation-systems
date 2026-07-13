@@ -25,12 +25,15 @@ repurpose/
 ├─ templates/
 │  ├─ content-package.md    ← the shape of one repurposed video's output
 │  └─ prompt-library.md     ← the AI prompts that drive generation
+├─ VOICE.md                 ← narrate the videos in YOUR cloned voice (setup + rules)
 ├─ scripts/
 │  ├─ repurpose.mjs         ← scaffolds a content package from a source video
-│  └─ voiceover.mjs         ← extracts a clean voiceover-only .txt from a package
+│  ├─ voiceover.mjs         ← extracts a clean voiceover-only .txt from a package
+│  └─ narrate.mjs           ← turns a voiceover .txt into an .mp3 in your voice
 ├─ voiceover/               ← generated .txt scripts (voice tool / teleprompter ready)
 │  ├─ 2026-week-01/
 │  └─ 2026-week-02/
+├─ audio/                   ← generated .mp3 narration (git-ignored, regenerable)
 └─ batch/
    ├─ 2026-week-01/         ← localbiz + creator + beginner starter set
    └─ 2026-week-02/         ← creator / agency / solopreneur / beginner monetization set
