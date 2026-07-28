@@ -51,6 +51,21 @@
   --color-cl-gpt-soft: rgba(13, 148, 136, 0.12);
   --color-cl-gemini: #4285f4;
   --color-cl-gemini-soft: rgba(66, 133, 244, 0.12);
+
+  /* ─────────────────────────────────────────────────────────
+     Vector Invoice (the /invoice app). Namespaced inv-* tokens —
+     a clean, light "paper + teal" identity for a business tool.
+     ───────────────────────────────────────────────────────── */
+  --color-inv-bg: #f8fafb;
+  --color-inv-surface: #ffffff;
+  --color-inv-surface-2: #f1f5f6;
+  --color-inv-ink: #16211f;
+  --color-inv-muted: #5d6b68;
+  --color-inv-accent: #0f766e;
+  --color-inv-accent-dark: #0b5d57;
+  --color-inv-accent-soft: rgba(15, 118, 110, 0.09);
+  --color-inv-rim: rgba(22, 33, 31, 0.11);
+  --color-inv-rim-accent: rgba(15, 118, 110, 0.32);
 }
 
 @theme inline {

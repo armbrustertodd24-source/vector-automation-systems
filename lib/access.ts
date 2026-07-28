@@ -22,3 +22,24 @@ export async function hasPaidAccess(): Promise<boolean> {
     return false
   }
 }
+
+/**
+ * True if the signed-in user has an active Vector Invoice Pro subscription.
+ * Deliberately separate from hasPaidAccess(): the learn plans and the invoice
+ * plan are different products and never unlock each other.
+ *
+ * Note: the subscriptions table is one row per user, so a single user cannot
+ * currently hold BOTH a learn plan and Invoice Pro. Acceptable at launch;
+ * normalize with a `product` column if that overlap ever materializes.
+ */
+export async function hasInvoiceProAccess(): Promise<boolean> {
+  try {
+    const session = await auth()
+    const userId = session?.user?.id
+    if (!userId) return false
+    const sub = await getSubscriptionByUserId(userId)
+    return !!sub && sub.plan === "invoice_pro" && ACTIVE_STATUSES.has(sub.status)
+  } catch {
+    return false
+  }
+}

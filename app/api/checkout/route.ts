@@ -6,7 +6,8 @@
  * webhook can attribute the purchase. Card entry happens on Stripe's hosted
  * page — no card data is handled here.
  *
- * Body: { "plan": "pro_monthly" | "pro_annual" | "founding" }
+ * Body: { "plan": "pro_monthly" | "pro_annual" | "founding" | "invoice_monthly",
+ *         "returnPath"?: one of RETURN_PATHS }
  * Returns: { url } to redirect the browser to.
  */
 import { NextResponse } from "next/server"
@@ -26,9 +27,15 @@ export async function POST(request: Request) {
   }
 
   let planKey: PlanKey
+  let returnPath = "/learn/pricing"
   try {
     const body = await request.json()
     planKey = body.plan
+    // Allowlisted so the redirect target can't be pointed off-site.
+    const RETURN_PATHS = new Set(["/learn/pricing", "/invoice", "/invoice/new"])
+    if (typeof body.returnPath === "string" && RETURN_PATHS.has(body.returnPath)) {
+      returnPath = body.returnPath
+    }
   } catch {
     return NextResponse.json({ error: "Invalid request body" }, { status: 400 })
   }
@@ -61,8 +68,13 @@ export async function POST(request: Request) {
       line_items: [{ price: getPriceId(planKey), quantity: 1 }],
       client_reference_id: session.user.id,
       metadata: { userId: session.user.id, planKey, plan: cfg.plan },
-      success_url: `${appUrl()}/learn/pricing?status=success`,
-      cancel_url: `${appUrl()}/learn/pricing?status=cancelled`,
+      // Stamp the plan onto the subscription itself so renewal webhooks
+      // (customer.subscription.updated) know which product this is.
+      ...(cfg.mode === "subscription"
+        ? { subscription_data: { metadata: { userId: session.user.id, plan: cfg.plan } } }
+        : {}),
+      success_url: `${appUrl()}${returnPath}?status=success`,
+      cancel_url: `${appUrl()}${returnPath}?status=cancelled`,
       allow_promotion_codes: true,
     })
 

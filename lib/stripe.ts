@@ -20,7 +20,7 @@ export function getStripe(): Stripe {
   return _stripe
 }
 
-export type PlanKey = "pro_monthly" | "pro_annual" | "founding"
+export type PlanKey = "pro_monthly" | "pro_annual" | "founding" | "invoice_monthly"
 
 interface PlanConfig {
   /** Stripe Price id, read from env (never hard-coded). */
@@ -28,13 +28,15 @@ interface PlanConfig {
   /** Recurring subscription vs one-time payment. */
   mode: "subscription" | "payment"
   /** Value stored in subscriptions.plan once purchased. */
-  plan: "pro" | "founding"
+  plan: "pro" | "founding" | "invoice_pro"
 }
 
 export const PLANS: Record<PlanKey, PlanConfig> = {
   pro_monthly: { priceEnv: "STRIPE_PRICE_PRO_MONTHLY", mode: "subscription", plan: "pro" },
   pro_annual: { priceEnv: "STRIPE_PRICE_PRO_ANNUAL", mode: "subscription", plan: "pro" },
   founding: { priceEnv: "STRIPE_PRICE_FOUNDING", mode: "payment", plan: "founding" },
+  // Vector Invoice Pro — separate product from the Promptu learn plans.
+  invoice_monthly: { priceEnv: "STRIPE_PRICE_INVOICE_MONTHLY", mode: "subscription", plan: "invoice_pro" },
 }
 
 export function getPriceId(planKey: PlanKey): string {

@@ -85,7 +85,9 @@ export async function POST(request: Request) {
         const row = await getSubscriptionByCustomerId(sub.customer as string)
         if (!row) break
         await applySubscriptionState(row.userId, {
-          plan: "pro",
+          // New checkouts stamp the product plan into subscription metadata;
+          // older learn subscriptions predate that and default to "pro".
+          plan: sub.metadata?.plan ?? "pro",
           status: sub.status,
           stripeSubscriptionId: sub.id,
           currentPeriodEnd: readPeriodEnd(sub),
